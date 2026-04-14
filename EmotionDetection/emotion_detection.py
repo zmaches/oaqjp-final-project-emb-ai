@@ -18,9 +18,9 @@ def emotion_detector(text_to_analyze): # URL of the emotion detection service
         fear_score = None
         joy_score = None
         sadness_score = None
-        dom_score = None
+        dom_emote = None
     # Otherwise act as normal
-    else:
+    elif response.status_code == 200:
         # # Parsing the JSON response from the API 
         formatted_response = json.loads(response.text)
         emotions = formatted_response['emotionPredictions'][0]["emotion"]
@@ -45,6 +45,13 @@ def emotion_detector(text_to_analyze): # URL of the emotion detection service
         if sadness_score>dom_score:
             dom_score = sadness_score
             dom_emote = 'sadness'
+    else:
+        anger_score = None
+        disgust_score = None
+        fear_score = None
+        joy_score = None
+        sadness_score = None
+        dom_emote = None
 
     # Returning a dictionary containing emotion detection results 
     return {'anger': anger_score, 
