@@ -11,31 +11,40 @@ def emotion_detector(text_to_analyze): # URL of the emotion detection service
 
     # Sending a POST request to the emotion detection API 
     response = requests.post(url, json=myobj, headers=header)
+    # If the response status code is 400, set all scores to None
+    if response.status_code == 400:
+        anger_score = None
+        disgust_score = None
+        fear_score = None
+        joy_score = None
+        sadness_score = None
+        dom_score = None
+    # Otherwise act as normal
+    else:
+        # # Parsing the JSON response from the API 
+        formatted_response = json.loads(response.text)
+        emotions = formatted_response['emotionPredictions'][0]["emotion"]
 
-    # Parsing the JSON response from the API 
-    formatted_response = json.loads(response.text)
-    emotions = formatted_response['emotionPredictions'][0]["emotion"]
-
-    # Extracting emotion labels and scores from the response 
-    anger_score = emotions['anger']
-    dom_score = anger_score
-    dom_emote = 'anger'
-    disgust_score = emotions['disgust']
-    if disgust_score>dom_score:
-        dom_score = disgust_score
-        dom_emote = 'disgust'
-    fear_score = emotions['fear']
-    if fear_score>dom_score:
-        dom_score = fear_score
-        dom_emote = 'fear'
-    joy_score = emotions['joy']
-    if joy_score>dom_score:
-        dom_score = joy_score
-        dom_emote = 'joy'
-    sadness_score = emotions['sadness']
-    if sadness_score>dom_score:
-        dom_score = sadness_score
-        dom_emote = 'sadness'
+        # Extracting emotion labels and scores from the response 
+        anger_score = emotions['anger']
+        dom_score = anger_score
+        dom_emote = 'anger'
+        disgust_score = emotions['disgust']
+        if disgust_score>dom_score:
+            dom_score = disgust_score
+            dom_emote = 'disgust'
+        fear_score = emotions['fear']
+        if fear_score>dom_score:
+            dom_score = fear_score
+            dom_emote = 'fear'
+        joy_score = emotions['joy']
+        if joy_score>dom_score:
+            dom_score = joy_score
+            dom_emote = 'joy'
+        sadness_score = emotions['sadness']
+        if sadness_score>dom_score:
+            dom_score = sadness_score
+            dom_emote = 'sadness'
 
     # Returning a dictionary containing emotion detection results 
     return {'anger': anger_score, 

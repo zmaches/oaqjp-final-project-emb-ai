@@ -15,16 +15,17 @@ def emote_detector():
 
     # Pass the text to the sentiment_analyzer function and store the response 
     response = emotion_detector(text_to_analyze)
-
-
-    output = (
+    if response['dominant emotion'] is None:
+	    return "Invalid text! Please try again."
+    else:
+        # Return a formatted string with the sentiment label and score 
+        output = (
         f"For the given statement, the system response is {list(response.keys())[0]}: {response['anger']}, "
         f"{list(response.keys())[1]}: {response['disgust']}, {list(response.keys())[2]}: {response['fear']}, " 
         f"{list(response.keys())[3]}: {response['joy']}, {list(response.keys())[4]}: {response['sadness']}. " 
         f"The dominant emotion is {response['dominant emotion']}."
-    )
-    # Return a formatted string with the sentiment label and score 
-    return output
+        )
+        return output
 @app.route("/") 
 def render_index_page(): 
     return render_template('index.html')
