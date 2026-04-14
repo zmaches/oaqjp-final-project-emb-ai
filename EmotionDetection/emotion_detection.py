@@ -25,7 +25,7 @@ def emotion_detector(text_to_analyze): # URL of the emotion detection service
         dom_score = disgust_score
         dom_emote = 'disgust'
     fear_score = emotions['fear']
-    if disgust_score>dom_score:
+    if fear_score>dom_score:
         dom_score = fear_score
         dom_emote = 'fear'
     joy_score = emotions['joy']
