@@ -12,4 +12,26 @@ def emotion_detector(text_to_analyze): # URL of the emotion detection service
     # Sending a POST request to the emotion detection API 
     response = requests.post(url, json=myobj, headers=header)
 
-    return response.text
+    # Parsing the JSON response from the API 
+    formatted_response = json.loads(response.text)
+    emotions = formatted_response['emotionPredictions'][0]["emotion"]
+
+    # Extracting emotion labels and scores from the response 
+    anger_score = emotions['anger']
+    dom_score = anger_score
+    dom_emote = 'anger'
+    disgust_score = emotions['disgust']
+    if disgust_score>dom_score:
+        dom_emote = 'disgust'
+    fear_score = emotions['fear']
+    if disgust_score>dom_score:
+        dom_emote = 'fear'
+    joy_score = emotions['joy']
+    if joy_score>dom_score:
+        dom_emote = 'joy'
+    sadness_score = emotions['sadness']
+    if sadness_score>dom_score:
+        dom_emote = 'sadness'
+
+    # Returning a dictionary containing emotion detection results 
+    return {'anger': anger_score, 'disgust': disgust_score, 'fear': fear_score, 'joy': joy_score, 'sadness': sadness_score, 'dominant emotion': dom_emote}
